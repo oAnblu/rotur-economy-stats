@@ -13,6 +13,7 @@ export default defineConfig({
 		}),
 		tailwindcss(),
 	],
+	base: "/rotur-economy-stats", // github pages fix
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
