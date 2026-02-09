@@ -73,7 +73,7 @@ export default function App() {
 
 				<Card className="bg-popover">
 					<CardContent>
-						<div className="grid grid-rows-1 grid-cols-4 gap-5">
+						<div className="grid md:grid-cols-4 gap-5">
 							<Card>
 								<CardHeader>
 									<div className="absolute flex justify-self-end items-center space-x-2">
