@@ -14,14 +14,22 @@ import { Label } from "./ui/label";
 export default function EcoInfoCard({
 	title,
 	data,
+	labelFormatter,
+
 	inflRC,
 	setInflRC,
-	labelFormatter,
+
+	showCents,
+	setShowCents,
 }: {
 	title: string;
 	labelFormatter?: (value: any) => string;
 	data: Item[];
+
 	inflRC: boolean;
+	showCents: boolean;
+
+	setShowCents: (value: boolean) => void;
 	setInflRC: (value: boolean) => void;
 }) {
 	return (
@@ -31,50 +39,28 @@ export default function EcoInfoCard({
 			</CardHeader>
 			<CardContent>
 				<div className="grid md:grid-cols-4 gap-5">
-					<Card>
-						<CardHeader>
-							<div className="absolute flex justify-self-end items-center space-x-2">
-								<Checkbox
-									checked={inflRC}
-									onCheckedChange={val =>
-										setInflRC(
-											typeof val === "boolean"
-												? val
-												: false,
-										)
-									}
-									id="show-diff-checkbox"
-								/>
-								<Label htmlFor="show-diff-checkbox">
-									In RC
-								</Label>
-							</div>
-
-							<CardTitle>Inflation</CardTitle>
-							<CardDescription>
-								Amount of credits added into the economy
-							</CardDescription>
-						</CardHeader>
-
-						<CardContent>
-							<BlehChart
-								data={data}
-								labelFormatter={labelFormatter}
-								tickFormatter={labelFormatter}
-								dataKeys={
-									inflRC
-										? [["inflrc", "var(--chart-1)"]]
-										: [["inflation", "var(--chart-1)"]]
-								}
-							/>
-						</CardContent>
-					</Card>
+					<ChartCard
+						title="Inflation"
+						description="Amount of credits added into the economy"
+						data={data}
+						labelFormatter={labelFormatter}
+						tickFormatter={labelFormatter}
+						dataKeys={
+							inflRC
+								? [["inflrc", "var(--chart-1)"]]
+								: [["inflation", "var(--chart-1)"]]
+						}
+					/>
 
 					<ChartCard
 						title="Comparison Rate"
-						description="Comparison of 1 RC to British Pence"
+						description={`Comparison of 1 RC to ${showCents ? "American Cent" : "British Pence"}`}
 						data={data}
-						dataKeys={[["comp.pence", "var(--chart-4)"]]}
+						dataKeys={
+							showCents
+								? [["comp.cents", "var(--chart-4)"]]
+								: [["comp.pence", "var(--chart-4)"]]
+						}
 						tickFormatter={labelFormatter}
 						labelFormatter={labelFormatter}
 					/>
