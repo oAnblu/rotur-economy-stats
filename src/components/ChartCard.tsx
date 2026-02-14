@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+import type { Payload } from "recharts/types/component/DefaultTooltipContent";
 import BlehChart from "./BlehChart";
 import {
 	Card,
@@ -12,6 +14,11 @@ export default function ChartCard(props: {
 	dataKeys: ([string] | [string, string])[];
 	title: string;
 	description: string;
+	tickFormatter?: (value: any, index: number) => string;
+	labelFormatter?: (
+		label: ReactNode,
+		payload: ReadonlyArray<Payload<any, any>>,
+	) => ReactNode;
 }) {
 	return (
 		<Card>
@@ -21,7 +28,12 @@ export default function ChartCard(props: {
 			</CardHeader>
 
 			<CardContent>
-				<BlehChart data={props.data} dataKeys={props.dataKeys} />
+				<BlehChart
+					data={props.data}
+					dataKeys={props.dataKeys}
+					tickFormatter={props.tickFormatter}
+					labelFormatter={props.labelFormatter}
+				/>
 			</CardContent>
 		</Card>
 	);

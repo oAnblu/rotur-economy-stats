@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-import ChartCard from "./components/ChartCard";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "./components/ui/card";
-import BlehChart from "./components/BlehChart";
-import { Label } from "./components/ui/label";
-import { Checkbox } from "./components/ui/checkbox";
+import { Card, CardContent } from "./components/ui/card";
+import { monthFormatter, yearFormatter } from "./components/BlehChart";
+import { monthlyData, yearlyData } from "./lib/timeperiods";
+import EcoInfoCard from "./components/EcoInfoCard";
 
 export interface Item {
 	ts: number;
@@ -71,74 +64,28 @@ export default function App() {
 					</CardContent>
 				</Card>
 
-				<Card className="bg-popover">
-					<CardContent>
-						<div className="grid md:grid-cols-4 gap-5">
-							<Card>
-								<CardHeader>
-									<div className="absolute flex justify-self-end items-center space-x-2">
-										<Checkbox
-											checked={inflRC}
-											onCheckedChange={val =>
-												setInflRC(
-													typeof val === "boolean"
-														? val
-														: false,
-												)
-											}
-											id="show-diff-checkbox"
-										/>
-										<Label htmlFor="show-diff-checkbox">
-											In RC
-										</Label>
-									</div>
+				<EcoInfoCard
+					title="Per day"
+					data={data}
+					inflRC={inflRC}
+					setInflRC={setInflRC}
+				/>
 
-									<CardTitle>Inflation</CardTitle>
-									<CardDescription>
-										Amount of credits added into the economy
-									</CardDescription>
-								</CardHeader>
+				<EcoInfoCard
+					title="Per month"
+					data={monthlyData(data)}
+					inflRC={inflRC}
+					setInflRC={setInflRC}
+					labelFormatter={monthFormatter}
+				/>
 
-								<CardContent>
-									<BlehChart
-										data={data}
-										dataKeys={
-											inflRC
-												? [["inflrc", "var(--chart-1)"]]
-												: [
-														[
-															"inflation",
-															"var(--chart-1)",
-														],
-													]
-										}
-									/>
-								</CardContent>
-							</Card>
-
-							<ChartCard
-								title="Comparison Rate"
-								description="Comparison of 1 RC to British Pence"
-								data={data}
-								dataKeys={[["comp.pence", "var(--chart-4)"]]}
-							/>
-
-							<ChartCard
-								title="Credit Supply"
-								description="Total amount of credits in the economy"
-								data={data}
-								dataKeys={[["total", "var(--chart-3)"]]}
-							/>
-
-							<ChartCard
-								title="Average Balance"
-								description="The average balance for a Rotur account"
-								data={data}
-								dataKeys={[["avg", "var(--chart-5)"]]}
-							/>
-						</div>
-					</CardContent>
-				</Card>
+				<EcoInfoCard
+					title="Per year"
+					data={yearlyData(data)}
+					inflRC={inflRC}
+					setInflRC={setInflRC}
+					labelFormatter={yearFormatter}
+				/>
 			</div>
 
 			{/* <pre>
